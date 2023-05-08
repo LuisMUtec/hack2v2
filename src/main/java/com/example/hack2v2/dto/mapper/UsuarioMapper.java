@@ -20,16 +20,15 @@ public class UsuarioMapper {
     public Usuario toEntity(UsuarioRequest request) {
         Usuario usuario = new Usuario();
         usuario.setNombreUsuario(request.getNombreUsuario());
-        usuario.setNombreUsuario(request.getNombre());
         usuario.setEmail(request.getEmail());
         usuario.setContrasena(request.getContrasena()); // se encriptará en el servicio
         // Asignar rol; por defecto ROLE_USER si no se especifica
         if (request.getRol() != null) {
-            usuario.setRol(request.getRol().name());
+            usuario.setRol(RolEnum.valueOf(request.getRol().name()));
         } else {
-            usuario.setRol(RolEnum.ROLE_USER.name());
+            usuario.setRol(RolEnum.valueOf(RolEnum.ROLE_USER.name()));
         }
-        usuario.setContrasena(request.getPassword()); // Debe ser encriptada antes de guardar
+        usuario.setContrasena(request.getContrasena()); // Debe ser encriptada antes de guardar
         usuario.setEmpresa(empresa);
         usuario.setRol(RolEnum.ROLE_USER); // Por defecto
         return usuario;
@@ -56,8 +55,8 @@ public class UsuarioMapper {
         if (request.getNombreUsuario() != null) {
             usuario.setNombreUsuario(request.getNombreUsuario());
         }
-        if (request.getCorreo() != null) {
-            usuario.setCorreo(request.getCorreo());
+        if (request.getEmail() != null) {
+            usuario.setEmail(request.getEmail());
         }
         if (request.getContrasena() != null && !request.getContrasena().isBlank()) {
             usuario.setContrasena(request.getContrasena());
