@@ -1,63 +1,124 @@
-
-│   │   │               ├── HackathonApplication.java
-│   │   │               ├── config/
-│   │   │               │   ├── SecurityConfig.java
-│   │   │               │   ├── JwtConfig.java
-│   │   │               │   └── AzureAiConfig.java
-│   │   │               ├── model/
-│   │   │               │   └── entities/
-│   │   │               │       ├── User.java
-│   │   │               │       ├── Chat.java
-│   │   │               │       ├── Message.java
-│   │   │               │       ├── enums/
-│   │   │               │       │   ├── SenderType.java
-│   │   │               │       │   └── AiModelType.java
-│   │   │               ├── repository/
-│   │   │               │   ├── UserRepository.java
-│   │   │               │   ├── ChatRepository.java
-│   │   │               │   └── MessageRepository.java
-│   │   │               ├── service/
-│   │   │               │   ├── UserService.java
-│   │   │               │   ├── ChatService.java
-│   │   │               │   ├── MessageService.java
-│   │   │               │   ├── AuthService.java
-│   │   │               │   ├── AiInferenceService.java
-│   │   │               │   └── impl/
-│   │   │               │       ├── UserServiceImpl.java
-│   │   │               │       ├── ChatServiceImpl.java
-│   │   │               │       ├── MessageServiceImpl.java
-│   │   │               │       ├── AuthServiceImpl.java
-│   │   │               │       └── AzureAiInferenceServiceImpl.java
-│   │   │               ├── dto/
-│   │   │               │   ├── request/
-│   │   │               │   │   ├── RegisterRequest.java
-│   │   │               │   │   ├── LoginRequest.java
-│   │   │               │   │   ├── ChatRequest.java
-│   │   │               │   │   └── MessageRequest.java
-│   │   │               │   ├── response/
-│   │   │               │   │   ├── JwtResponse.java
-│   │   │               │   │   ├── UserResponse.java
-│   │   │               │   │   ├── ChatResponse.java
-│   │   │               │   │   ├── MessageResponse.java
-│   │   │               │   │   └── ApiResponse.java
-│   │   │               │   └── mapper/
-│   │   │               │       ├── UserMapper.java
-│   │   │               │       ├── ChatMapper.java
-│   │   │               │       └── MessageMapper.java
-│   │   │               ├── controller/
-│   │   │               │   ├── AuthController.java
-│   │   │               │   ├── ChatController.java
-│   │   │               │   └── MessageController.java
-│   │   │               ├── exception/
-│   │   │               │   ├── GlobalExceptionHandler.java
-│   │   │               │   ├── ResourceNotFoundException.java
-│   │   │               │   ├── AuthenticationException.java
-│   │   │               │   ├── BadRequestException.java
-│   │   │               │   └── AiServiceException.java
-│   │   │               ├── security/
-│   │   │               │   ├── JwtTokenProvider.java
-│   │   │               │   ├── JwtAuthenticationFilter.java
-│   │   │               │   └── UserDetailsServiceImpl.java
-│   │   │               └── util/
-│   │   │                   ├── PaginationUtils.java
-│   │   │                   └── Constants.java
+config/
+│   ├── SecurityConfig.java
+│   ├── JwtConfig.java
+│   ├── RateLimitConfig.java
+│   └── WebConfig.java
+│
+├── model/
+│   ├── entities/
+│   │   ├── Empresa.java
+│   │   ├── Usuario.java
+│   │   ├── Administrador.java
+│   │   ├── Restriccion.java
+│   │   ├── Limite.java
+│   │   ├── Solicitud.java
+│   │   └── ModeloIA.java
+│   │
+│   └── enums/
+│       ├── RolEnum.java
+│       ├── EstadoEmpresaEnum.java
+│       └── TipoModeloEnum.java
+│
+├── repository/
+│   ├── EmpresaRepository.java
+│   ├── UsuarioRepository.java
+│   ├── AdministradorRepository.java
+│   ├── RestriccionRepository.java
+│   ├── LimiteRepository.java
+│   ├── SolicitudRepository.java
+│   └── ModeloIARepository.java
+│
+├── service/
+│   ├── auth/
+│   │   ├── AuthService.java
+│   │   ├── JwtService.java
+│   │   └── UserDetailsServiceImpl.java
+│   │
+│   ├── admin/
+│   │   ├── EmpresaAdminService.java
+│   │   └── ReporteAdminService.java
+│   │
+│   ├── company/
+│   │   ├── RestriccionService.java
+│   │   ├── UsuarioEmpresaService.java
+│   │   └── LimiteService.java
+│   │
+│   ├── ai/
+│   │   ├── IAModelService.java
+│   │   ├── ChatService.java
+│   │   ├── CompletionService.java
+│   │   └── MultimodalService.java
+│   │
+│   └── common/
+│       ├── RateLimitService.java
+│       └── ConsumoService.java
+│
+├── controller/
+│   ├── auth/
+│   │   └── AuthController.java
+│   │
+│   ├── admin/
+│   │   ├── EmpresaController.java
+│   │   └── AdminReporteController.java
+│   │
+│   ├── company/
+│   │   ├── RestriccionController.java
+│   │   ├── UsuarioEmpresaController.java
+│   │   └── LimiteController.java
+│   │
+│   └── ai/
+│       ├── ChatController.java
+│       ├── CompletionController.java
+│       ├── MultimodalController.java
+│       ├── ModeloController.java
+│       └── HistorialController.java
+│
+├── dto/
+│   ├── request/
+│   │   ├── EmpresaRequest.java
+│   │   ├── UsuarioRequest.java
+│   │   ├── RestriccionRequest.java
+│   │   ├── LimiteRequest.java
+│   │   ├── LoginRequest.java
+│   │   ├── ChatRequest.java
+│   │   ├── CompletionRequest.java
+│   │   └── MultimodalRequest.java
+│   │
+│   ├── response/
+│   │   ├── EmpresaResponse.java
+│   │   ├── UsuarioResponse.java
+│   │   ├── RestriccionResponse.java
+│   │   ├── LimiteResponse.java
+│   │   ├── JwtResponse.java
+│   │   ├── ConsumoResponse.java
+│   │   ├── AIResponse.java
+│   │   └── ErrorResponse.java
+│   │
+│   └── mapper/
+│       ├── EmpresaMapper.java
+│       ├── UsuarioMapper.java
+│       ├── RestriccionMapper.java
+│       ├── LimiteMapper.java
+│       └── SolicitudMapper.java
+│
+├── exception/
+│   ├── GlobalExceptionHandler.java
+│   ├── ResourceNotFoundException.java
+│   ├── BadRequestException.java
+│   ├── UnauthorizedException.java
+│   └── RateLimitExceededException.java
+│
+├── util/
+│   ├── DateTimeUtil.java
+│   ├── ValidationUtil.java
+│   └── TokenUtil.java
+│
+├── integration/
+│   └── github/
+│       ├── GitHubModelsClient.java
+│       ├── MultimodalModelClient.java
+│       ├── MetaModelClient.java
+│       ├── DeepSpeakModelClient.java
+│       └── OpenAIModelClient.java
+│
+└── SparkyAiApplication.java

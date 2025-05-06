@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Script para crear la estructura de carpetas y archivos desde un árbol en un archivo de texto.
-BASE="src/main/java/com/example/hack2_2024"
+BASE="src/main/java/com/example/hack2v2"
 INPUT="estructura_proyecto_structure.txt"
 
 # Verifica que el archivo de entrada exista
