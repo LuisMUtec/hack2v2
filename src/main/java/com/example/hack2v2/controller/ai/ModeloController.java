@@ -3,7 +3,13 @@ package com.example.hack2v2.controller;
 import com.example.hack2v2.dto.request.ChatRequest;
 import com.example.hack2v2.dto.response.ChatResponse;
 import com.example.hack2v2.external.githubmodels.GitHubModelsClient;
+import com.example.hack2v2.model.entities.ModeloIA;
+import com.example.hack2v2.model.entities.Solicitud;
+import com.example.hack2v2.model.entities.Usuario;
+import com.example.hack2v2.service.ModeloIAService;
+import com.example.hack2v2.service.SolicitudService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,12 +17,17 @@ import org.springframework.web.bind.annotation.*;
 public class ModeloController {
 
     private final GitHubModelsClient modelsClient;
+    private final SolicitudService solicitudService;
+    private final ModeloIAService modeloIAService;
 
-    public ModeloController(GitHubModelsClient modelsClient) {
+    public ModeloController(GitHubModelsClient modelsClient,
+                            SolicitudService solicitudService,
+                            ModeloIAService modeloIAService) {
         this.modelsClient = modelsClient;
+        this.solicitudService = solicitudService;
+        this.modeloIAService = modeloIAService;
     }
 
-    // Endpoint para obtener todos los modelos disponibles
     @GetMapping("/models")
     public ResponseEntity<String> getModels() {
         try {
@@ -27,15 +38,42 @@ public class ModeloController {
         }
     }
 
-    // Endpoint para enviar un prompt al modelo tipo chat (ej: openai/gpt-4)
     @PostMapping("/chat")
-    public ResponseEntity<ChatResponse> chat(@RequestBody ChatRequest request) {
+    public ResponseEntity<ChatResponse> chat(@RequestBody ChatRequest request,
+                                             @AuthenticationPrincipal Usuario usuario) {
         try {
-            String rawResponse = modelsClient.enviarPromptChat(request.getPrompt());
-            return ResponseEntity.ok(new ChatResponse(rawResponse));
+            String respuestaRaw = modelsClient.enviarPromptChat(request.getPrompt());
+
+            ModeloIA modelo = modeloIAService.obtenerPorNombre("openai/gpt-4");
+
+            Solicitud solicitud = new Solicitud();
+            solicitud.setUsuario(usuario);
+            solicitud.setTipo("chat");
+            solicitud.setConsulta(request.getPrompt());
+            solicitud.setRespuesta(respuestaRaw);
+            solicitud.setExitoso(true);
+            solicitud.setTokensConsumidos(0); // Estimación pendiente
+            solicitud.setModelo(modelo);
+
+            solicitudService.guardar(solicitud);
+
+            return ResponseEntity.ok(new ChatResponse(respuestaRaw));
         } catch (Exception e) {
+            ModeloIA modelo = modeloIAService.obtenerPorNombre("openai/gpt-4");
+
+            Solicitud solicitud = new Solicitud();
+            solicitud.setUsuario(usuario);
+            solicitud.setTipo("chat");
+            solicitud.setConsulta(request.getPrompt());
+            solicitud.setExitoso(false);
+            solicitud.setMensajeError(e.getMessage());
+            solicitud.setModelo(modelo);
+
+            solicitudService.guardar(solicitud);
+
             return ResponseEntity.internalServerError()
                     .body(new ChatResponse("Error al generar respuesta: " + e.getMessage()));
         }
     }
 }
+
