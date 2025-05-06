@@ -1,6 +1,6 @@
-package com.example.hack2v2.entities;
+package com.example.hack2v2.model.entities;
 
-import com.example.sparkyai.model.enums.EstadoEmpresaEnum;
+import com.example.hack2v2.model.enums.EstadoEmpresaEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

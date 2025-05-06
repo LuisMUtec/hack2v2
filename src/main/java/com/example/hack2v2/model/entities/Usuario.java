@@ -1,6 +1,6 @@
-package com.example.sparkyai.model.entities;
+package com.example.hack2v2.model.entities;
 
-import com.example.sparkyai.model.enums.RolEnum;
+import com.example.hack2v2.model.enums.RolEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

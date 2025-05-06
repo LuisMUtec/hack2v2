@@ -1,8 +1,8 @@
-package com.example.sparkyai.repository;
+package com.example.hack2v2.repository;
 
-import com.example.hack2v2.entities.Limite;
-import com.example.sparkyai.model.entities.ModeloIA;
-import com.example.sparkyai.model.entities.Usuario;
+import com.example.hack2v2.model.entities.Limite;
+import com.example.hack2v2.model.entities.ModeloIA;
+import com.example.hack2v2.model.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
-package com.example.sparkyai.repository;
+package com.example.hack2v2.repository;
 
-import com.example.hack2v2.entities.Empresa;
-import com.example.sparkyai.model.enums.EstadoEmpresaEnum;
+import com.example.hack2v2.model.entities.Empresa;
+import com.example.hack2v2.model.enums.EstadoEmpresaEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

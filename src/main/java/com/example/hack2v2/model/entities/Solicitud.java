@@ -1,4 +1,4 @@
-package com.example.sparkyai.model.entities;
+package com.example.hack2v2.model.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

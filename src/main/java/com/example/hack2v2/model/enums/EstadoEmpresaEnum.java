@@ -1,4 +1,4 @@
-package com.example.sparkyai.model.enums;
+package com.example.hack2v2.model.enums;
 
 public enum EstadoEmpresaEnum {
     ACTIVO,
