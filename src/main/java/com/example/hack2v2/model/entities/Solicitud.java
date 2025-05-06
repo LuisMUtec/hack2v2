@@ -27,6 +27,10 @@ public class Solicitud {
     @JoinColumn(name = "modelo_id", nullable = false)
     private ModeloIA modelo;
     
+    @Column(nullable = false)
+    private String tipo; 
+
+    
     @Column(nullable = false, columnDefinition = "TEXT")
     private String consulta;
     
