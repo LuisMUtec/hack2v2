@@ -1,49 +1,32 @@
-package com.example.hack2v2.model.entities;
+package com.example.hack2v2.repository;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.example.hack2v2.model.entities.Empresa;
+import com.example.hack2v2.model.entities.ModeloIA;
+import com.example.hack2v2.model.entities.Solicitud;
+import com.example.hack2v2.model.entities.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
-@Table(name = "solicitudes")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Solicitud {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
-
-    @ManyToOne
-    @JoinColumn(name = "modelo_id", nullable = false)
-    private ModeloIA modelo;
-
-    @Column(nullable = false)
-    private String tipo; // "chat", "completion", "multimodal"
-
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String consulta;
-
-    @Column(columnDefinition = "TEXT")
-    private String respuesta;
-
-    private Integer tokensConsumidos;
-
-    @Column(nullable = false)
-    private LocalDateTime fechaHora;
-
-    private String nombreArchivo; // Para solicitudes multimodales
-
-    private boolean exitoso;
-
-    private String mensajeError;
-} 
+@Repository
+public interface SolicitudRepository extends JpaRepository<Solicitud, Long> {
+    List<Solicitud> findByUsuario(Usuario usuario);
+    List<Solicitud> findByUsuarioAndFechaHoraBetween(Usuario usuario, LocalDateTime inicio, LocalDateTime fin);
+    
+    List<Solicitud> findByModelo(ModeloIA modelo);
+    
+    @Query("SELECT s FROM Solicitud s WHERE s.usuario.empresa = :empresa")
+    List<Solicitud> findByEmpresa(Empresa empresa);
+    
+    @Query("SELECT s FROM Solicitud s WHERE s.usuario.empresa = :empresa AND s.fechaHora BETWEEN :inicio AND :fin")
+    List<Solicitud> findByEmpresaAndFechaHoraBetween(Empresa empresa, LocalDateTime inicio, LocalDateTime fin);
+    
+    @Query("SELECT SUM(s.tokensConsumidos) FROM Solicitud s WHERE s.usuario = :usuario")
+    Integer sumTokensConsumidosByUsuario(Usuario usuario);
+    
+    @Query("SELECT SUM(s.tokensConsumidos) FROM Solicitud s WHERE s.usuario.empresa = :empresa")
+    Integer sumTokensConsumidosByEmpresa(Empresa empresa);
+}

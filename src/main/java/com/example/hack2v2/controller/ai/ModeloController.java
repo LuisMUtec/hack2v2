@@ -23,6 +23,7 @@ public class ModeloController {
         this.solicitudService = solicitudService;
     }
 
+    // Endpoint para obtener todos los modelos disponibles
     @GetMapping("/models")
     public ResponseEntity<String> getModels() {
         try {
@@ -59,9 +60,7 @@ public class ModeloController {
             solicitud.setExitoso(false);
             solicitud.setMensajeError(e.getMessage());
             solicitud.setModelo(new ModeloIA("openai/gpt-4"));
-
             solicitudService.guardar(solicitud);
-
             return ResponseEntity.internalServerError()
                     .body(new ChatResponse("Error al generar respuesta: " + e.getMessage()));
         }
