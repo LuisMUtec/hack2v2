@@ -1,0 +1,63 @@
+
+│   │   │               ├── HackathonApplication.java
+│   │   │               ├── config/
+│   │   │               │   ├── SecurityConfig.java
+│   │   │               │   ├── JwtConfig.java
+│   │   │               │   └── AzureAiConfig.java
+│   │   │               ├── model/
+│   │   │               │   └── entities/
+│   │   │               │       ├── User.java
+│   │   │               │       ├── Chat.java
+│   │   │               │       ├── Message.java
+│   │   │               │       ├── enums/
+│   │   │               │       │   ├── SenderType.java
+│   │   │               │       │   └── AiModelType.java
+│   │   │               ├── repository/
+│   │   │               │   ├── UserRepository.java
+│   │   │               │   ├── ChatRepository.java
+│   │   │               │   └── MessageRepository.java
+│   │   │               ├── service/
+│   │   │               │   ├── UserService.java
+│   │   │               │   ├── ChatService.java
+│   │   │               │   ├── MessageService.java
+│   │   │               │   ├── AuthService.java
+│   │   │               │   ├── AiInferenceService.java
+│   │   │               │   └── impl/
+│   │   │               │       ├── UserServiceImpl.java
+│   │   │               │       ├── ChatServiceImpl.java
+│   │   │               │       ├── MessageServiceImpl.java
+│   │   │               │       ├── AuthServiceImpl.java
+│   │   │               │       └── AzureAiInferenceServiceImpl.java
+│   │   │               ├── dto/
+│   │   │               │   ├── request/
+│   │   │               │   │   ├── RegisterRequest.java
+│   │   │               │   │   ├── LoginRequest.java
+│   │   │               │   │   ├── ChatRequest.java
+│   │   │               │   │   └── MessageRequest.java
+│   │   │               │   ├── response/
+│   │   │               │   │   ├── JwtResponse.java
+│   │   │               │   │   ├── UserResponse.java
+│   │   │               │   │   ├── ChatResponse.java
+│   │   │               │   │   ├── MessageResponse.java
+│   │   │               │   │   └── ApiResponse.java
+│   │   │               │   └── mapper/
+│   │   │               │       ├── UserMapper.java
+│   │   │               │       ├── ChatMapper.java
+│   │   │               │       └── MessageMapper.java
+│   │   │               ├── controller/
+│   │   │               │   ├── AuthController.java
+│   │   │               │   ├── ChatController.java
+│   │   │               │   └── MessageController.java
+│   │   │               ├── exception/
+│   │   │               │   ├── GlobalExceptionHandler.java
+│   │   │               │   ├── ResourceNotFoundException.java
+│   │   │               │   ├── AuthenticationException.java
+│   │   │               │   ├── BadRequestException.java
+│   │   │               │   └── AiServiceException.java
+│   │   │               ├── security/
+│   │   │               │   ├── JwtTokenProvider.java
+│   │   │               │   ├── JwtAuthenticationFilter.java
+│   │   │               │   └── UserDetailsServiceImpl.java
+│   │   │               └── util/
+│   │   │                   ├── PaginationUtils.java
+│   │   │                   └── Constants.java
