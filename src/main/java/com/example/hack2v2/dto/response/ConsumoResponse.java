@@ -1,5 +1,4 @@
 package com.example.hack2v2.dto.response;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
