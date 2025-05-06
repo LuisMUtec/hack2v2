@@ -1,4 +1,4 @@
-package com.example.hack2v2.github;
+package com.example.hack2v2.integration.github;
 
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Value;
