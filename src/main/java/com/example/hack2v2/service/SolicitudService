@@ -1,0 +1,32 @@
+package com.example.hack2v2.service;
+
+import com.example.hack2v2.model.entities.Solicitud;
+import com.example.hack2v2.model.entities.Usuario;
+import com.example.hack2v2.repository.SolicitudRepository;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+public class SolicitudService {
+
+    private final SolicitudRepository solicitudRepository;
+
+    public SolicitudService(SolicitudRepository solicitudRepository) {
+        this.solicitudRepository = solicitudRepository;
+    }
+
+    public Solicitud guardar(Solicitud solicitud) {
+        solicitud.setFechaHora(LocalDateTime.now());
+        return solicitudRepository.save(solicitud);
+    }
+
+    public List<Solicitud> obtenerPorUsuario(Usuario usuario) {
+        return solicitudRepository.findByUsuario(usuario);
+    }
+
+    public List<Solicitud> obtenerPorUsuarioEntreFechas(Usuario usuario, LocalDateTime inicio, LocalDateTime fin) {
+        return solicitudRepository.findByUsuarioAndFechaHoraBetween(usuario, inicio, fin);
+    }
+} 
