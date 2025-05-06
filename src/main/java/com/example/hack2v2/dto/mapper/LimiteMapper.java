@@ -46,7 +46,7 @@ public class LimiteMapper {
                 .build();
     }
     
-    private LocalDateTime calcularProximoReinicio(LocalDateTime desde, String periodoReinicio) {
+    public LocalDateTime calcularProximoReinicio(LocalDateTime desde, String periodoReinicio) {
         // Parsear el periodo de reinicio (1h, 1d, 7d)
         char unidad = periodoReinicio.charAt(periodoReinicio.length() - 1);
         int cantidad = Integer.parseInt(periodoReinicio.substring(0, periodoReinicio.length() - 1));

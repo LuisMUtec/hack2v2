@@ -1,7 +1,7 @@
 package com.example.hack2v2.repository;
 
 import com.example.hack2v2.model.entities.Empresa;
-import com.example.sparkyai.model.entities.ModeloIA;
+import com.example.hack2v2.model.entities.ModeloIA;
 import com.example.hack2v2.model.entities.Solicitud;
 import com.example.hack2v2.model.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
