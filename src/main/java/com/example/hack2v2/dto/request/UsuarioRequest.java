@@ -1,5 +1,6 @@
 package com.example.hack2v2.dto.request;
 
+import com.example.hack2v2.model.enums.RolEnum;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,20 +14,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UsuarioRequest {
-    
-    @NotBlank(message = "El nombre es obligatorio")
-    private String nombre;
-    
-    @NotBlank(message = "El apellido es obligatorio")
-    private String apellido;
-    
-    @NotBlank(message = "El email es obligatorio")
-    @Email(message = "El formato del email no es válido")
-    private String email;
-    
-    @NotBlank(message = "La contraseña es obligatoria")
-    private String password;
-    
-    @NotNull(message = "La empresa es obligatoria")
-    private Long empresaId;
+
+    @NotBlank
+    private String nombreUsuario;
+    @Email
+    private String correo;
+    @NotBlank
+    private String contrasena;
+    @NotNull
+    private RolEnum rol;
+
+
 }

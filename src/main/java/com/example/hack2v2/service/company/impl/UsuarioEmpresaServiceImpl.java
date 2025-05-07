@@ -3,6 +3,7 @@ package com.example.hack2v2.service.company.impl;
 import com.example.hack2v2.dto.mapper.UsuarioMapper;
 import com.example.hack2v2.dto.request.UsuarioRequest;
 import com.example.hack2v2.dto.response.UsuarioResponse;
+import com.example.hack2v2.dto.response.ConsumoResponse;
 import com.example.hack2v2.exception.BadRequestException;
 import com.example.hack2v2.exception.ResourceNotFoundException;
 import com.example.hack2v2.exception.UnauthorizedException;
@@ -10,7 +11,7 @@ import com.example.hack2v2.model.entities.Empresa;
 import com.example.hack2v2.model.entities.Usuario;
 import com.example.hack2v2.repository.EmpresaRepository;
 import com.example.hack2v2.repository.UsuarioRepository;
-import com.example.hack2v2.service.auth.JwtService;
+import com.example.hack2v2.repository.SolicitudRepository;
 import com.example.hack2v2.service.company.UsuarioEmpresaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,118 +31,92 @@ public class UsuarioEmpresaServiceImpl implements UsuarioEmpresaService {
     private final EmpresaRepository empresaRepository;
     private final UsuarioMapper usuarioMapper;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
+    private final SolicitudRepository solicitudRepository;
 
     @Override
     @Transactional
-    public UsuarioResponse crearUsuario(UsuarioRequest request, Long empresaId) {
-        // Verificar que la empresa exista
+    public UsuarioResponse crear(UsuarioRequest request) {
+        Long empresaId = obtenerEmpresaIdDelUsuarioActual();
         Empresa empresa = empresaRepository.findById(empresaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
-        
-        // Verificar que el email no esté en uso
-        if (usuarioRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new BadRequestException("El email ya está en uso");
+
+        if (usuarioRepository.findByCorreo(request.getCorreo()).isPresent()) {
+            throw new BadRequestException("El correo ya está en uso");
         }
-        
-        // Crear el usuario
-        Usuario usuario = usuarioMapper.toEntity(request, empresa);
-        usuario.setPassword(passwordEncoder.encode(request.getPassword()));
-        
-        usuario = usuarioRepository.save(usuario);
-        return usuarioMapper.toResponse(usuario);
+
+        Usuario usuario = usuarioMapper.toEntity(request);
+        usuario.setEmpresa(empresa);
+        usuario.setContrasena(passwordEncoder.encode(request.getContrasena()));
+
+        Usuario saved = usuarioRepository.save(usuario);
+        return usuarioMapper.toResponse(saved);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<UsuarioResponse> listarUsuariosPorEmpresa(Long empresaId) {
-        Empresa empresa = empresaRepository.findById(empresaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
-        
-        return usuarioRepository.findByEmpresa(empresa).stream()
+    public List<UsuarioResponse> listarTodos() {
+        Long empresaId = obtenerEmpresaIdDelUsuarioActual();
+        return usuarioRepository.findByEmpresaId(empresaId).stream()
                 .map(usuarioMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public UsuarioResponse obtenerUsuario(Long id, Long empresaId) {
+    public UsuarioResponse obtenerPorId(Long id) {
+        Long empresaId = obtenerEmpresaIdDelUsuarioActual();
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
-        
-        // Verificar que el usuario pertenezca a la empresa
         if (!usuario.getEmpresa().getId().equals(empresaId)) {
-            throw new UnauthorizedException("No tiene permisos para acceder a este usuario");
+            throw new UnauthorizedException("Sin permiso");
         }
-        
         return usuarioMapper.toResponse(usuario);
     }
 
     @Override
     @Transactional
-    public UsuarioResponse actualizarUsuario(Long id, UsuarioRequest request, Long empresaId) {
+    public UsuarioResponse actualizar(Long id, UsuarioRequest request) {
+        Long empresaId = obtenerEmpresaIdDelUsuarioActual();
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
-        
-        // Verificar que el usuario pertenezca a la empresa
         if (!usuario.getEmpresa().getId().equals(empresaId)) {
-            throw new UnauthorizedException("No tiene permisos para actualizar este usuario");
+            throw new UnauthorizedException("Sin permiso");
         }
-        
-        // Verificar si el nuevo email no está en uso por otro usuario
-        if (request.getEmail() != null && !request.getEmail().equals(usuario.getEmail())) {
-            Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(request.getEmail());
-            if (usuarioExistente.isPresent() && !usuarioExistente.get().getId().equals(id)) {
-                throw new BadRequestException("El email ya está en uso por otro usuario");
-            }
+
+        if (request.getCorreo() != null && !request.getCorreo().equals(usuario.getCorreo())) {
+            usuarioRepository.findByCorreo(request.getCorreo())
+                    .filter(u -> !u.getId().equals(id))
+                    .ifPresent(u -> { throw new BadRequestException("Correo en uso"); });
+            usuario.setCorreo(request.getCorreo());
         }
-        
-        // Actualizar los campos
+
         usuarioMapper.updateEntityFromRequest(request, usuario);
-        
-        // Actualizar contraseña si se proporciona
-        if (request.getPassword() != null && !request.getPassword().isBlank()) {
-            usuario.setPassword(passwordEncoder.encode(request.getPassword()));
+        if (request.getContrasena() != null && !request.getContrasena().isBlank()) {
+            usuario.setContrasena(passwordEncoder.encode(request.getContrasena()));
         }
-        
-        usuario = usuarioRepository.save(usuario);
-        return usuarioMapper.toResponse(usuario);
+
+        Usuario updated = usuarioRepository.save(usuario);
+        return usuarioMapper.toResponse(updated);
     }
 
     @Override
-    @Transactional
-    public void cambiarEstadoUsuario(Long id, boolean activo, Long empresaId) {
-        Usuario usuario = usuarioRepository.findById(id)
+    @Transactional(readOnly = true)
+    public List<ConsumoResponse> consumoUsuario(Long userId) {
+        Long empresaId = obtenerEmpresaIdDelUsuarioActual();
+        Usuario usuario = usuarioRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
-        
-        // Verificar que el usuario pertenezca a la empresa
         if (!usuario.getEmpresa().getId().equals(empresaId)) {
-            throw new UnauthorizedException("No tiene permisos para modificar este usuario");
+            throw new UnauthorizedException("Sin permiso");
         }
-        
-        // No permitir desactivar al administrador de la empresa
-        Optional<Administrador> admin = administradorRepository.findByUsuario(usuario);
-        if (admin.isPresent() && !activo) {
-            throw new BadRequestException("No se puede desactivar al administrador de la empresa");
-        }
-        
-        usuario.setActivo(activo);
-        usuarioRepository.save(usuario);
+        return solicitudRepository.sumarPorModeloYUsuario(userId);
     }
 
-    @Override
-    public Empresa obtenerEmpresaDelUsuarioActual() {
+    /** Obtiene el ID de la empresa asociada al usuario autenticado. */
+    private Long obtenerEmpresaIdDelUsuarioActual() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
-        
-        Usuario usuario = usuarioRepository.findByEmail(email)
+        String correo = auth.getName();
+        Usuario usuario = usuarioRepository.findByCorreo(correo)
                 .orElseThrow(() -> new UnauthorizedException("Usuario no autenticado"));
-        
-        return usuario.getEmpresa();
-    }
-
-    @Override
-    public Long obtenerEmpresaIdDelUsuarioActual() {
-        return obtenerEmpresaDelUsuarioActual().getId();
+        return usuario.getEmpresa().getId();
     }
 }
