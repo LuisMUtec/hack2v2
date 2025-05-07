@@ -15,6 +15,6 @@ public class UsuarioResponse {
     private Long empresaId;
     private String empresaNombre;
     private String nombreUsuario;
-    private String correo;
+    private String email;
 
 }
