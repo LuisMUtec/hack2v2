@@ -19,7 +19,7 @@ public class UsuarioMapper {
     public Usuario toEntity(UsuarioRequest request) {
         Usuario usuario = new Usuario();
         usuario.setNombreUsuario(request.getNombreUsuario());
-        usuario.setCorreo(request.getCorreo());
+        usuario.setEmail(request.getEmail());
         usuario.setContrasena(request.getContrasena()); // se encriptará en el servicio
         // Asignar rol; por defecto ROLE_USER si no se especifica
         if (request.getRol() != null) {

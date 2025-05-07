@@ -28,8 +28,8 @@ public class Usuario {
     @Column(name = "nombre_usuario", unique = true, nullable = false)
     private String nombreUsuario;
 
-    @Column(name = "correo", unique = true, nullable = false)
-    private String correo;
+    @Column(name = "email", unique = true, nullable = false)
+    private String email;
 
     @Column(name = "contrasena", nullable = false)
     private String contrasena;
