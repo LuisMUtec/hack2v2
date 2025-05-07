@@ -18,7 +18,7 @@ public class UsuarioRequest {
     @NotBlank
     private String nombreUsuario;
     @Email
-    private String correo;
+    private String email;
     @NotBlank
     private String contrasena;
     @NotNull
