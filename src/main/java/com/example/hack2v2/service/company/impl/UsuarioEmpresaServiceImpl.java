@@ -8,7 +8,6 @@ import com.example.hack2v2.exception.ResourceNotFoundException;
 import com.example.hack2v2.exception.UnauthorizedException;
 import com.example.hack2v2.model.entities.Empresa;
 import com.example.hack2v2.model.entities.Usuario;
-import com.example.hack2v2.repository.AdministradorRepository;
 import com.example.hack2v2.repository.EmpresaRepository;
 import com.example.hack2v2.repository.UsuarioRepository;
 import com.example.hack2v2.service.auth.JwtService;
@@ -30,7 +29,6 @@ public class UsuarioEmpresaServiceImpl implements UsuarioEmpresaService {
 
     private final UsuarioRepository usuarioRepository;
     private final EmpresaRepository empresaRepository;
-    private final AdministradorRepository administradorRepository;
     private final UsuarioMapper usuarioMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;

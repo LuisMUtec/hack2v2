@@ -21,21 +21,31 @@ public class Empresa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(nullable = false)
     private String nombre;
-    
+
     @Column(unique = true, nullable = false)
     private String ruc;
-    
+
     @Column(nullable = false)
     private LocalDateTime fechaAfiliacion;
-    
+
     private boolean estado = true;
-    
+
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
-    private List<Usuario> usuarios = new ArrayList<>();
-    
+    private List<Usuario> usuarios;
+
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
-    private List<Restriccion> restricciones = new ArrayList<>();
+    private List<Restriccion> restricciones;
+
+    public void addUsuario(Usuario usuario) {
+        if (usuarios == null) {
+            usuarios = new ArrayList<>();
+        }
+        usuarios.add(usuario);
+        usuario.setEmpresa(this);
+    }
+
+
 }

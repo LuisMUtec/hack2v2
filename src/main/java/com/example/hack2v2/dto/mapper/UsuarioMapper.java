@@ -12,24 +12,20 @@ public class UsuarioMapper {
 
     public Usuario toEntity(UsuarioRequest request, Empresa empresa) {
         Usuario usuario = new Usuario();
-        usuario.setNombre(request.getNombre());
-        usuario.setApellido(request.getApellido());
+        usuario.setNombreUsuario(request.getNombre());
         usuario.setEmail(request.getEmail());
-        usuario.setPassword(request.getPassword()); // Debe ser encriptada antes de guardar
+        usuario.setContrasena(request.getPassword()); // Debe ser encriptada antes de guardar
         usuario.setEmpresa(empresa);
         usuario.setRol(RolEnum.ROLE_USER); // Por defecto
-        usuario.setActivo(true);
         return usuario;
     }
 
     public UsuarioResponse toResponse(Usuario usuario) {
         return UsuarioResponse.builder()
                 .id(usuario.getId())
-                .nombre(usuario.getNombre())
-                .apellido(usuario.getApellido())
+                .nombreUsuario(usuario.getNombreUsuario())
                 .email(usuario.getEmail())
                 .rol(usuario.getRol())
-                .activo(usuario.isActivo())
                 .empresaId(usuario.getEmpresa() != null ? usuario.getEmpresa().getId() : null)
                 .empresaNombre(usuario.getEmpresa() != null ? usuario.getEmpresa().getNombre() : null)
                 .build();
@@ -37,10 +33,7 @@ public class UsuarioMapper {
 
     public void updateEntityFromRequest(UsuarioRequest request, Usuario usuario) {
         if (request.getNombre() != null) {
-            usuario.setNombre(request.getNombre());
-        }
-        if (request.getApellido() != null) {
-            usuario.setApellido(request.getApellido());
+            usuario.setNombreUsuario(request.getNombre());
         }
         if (request.getEmail() != null) {
             usuario.setEmail(request.getEmail());
