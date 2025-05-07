@@ -20,6 +20,4 @@ public class RestriccionRequest {
 
     @NotNull(message = "El periodo de reinicio es obligatorio")
     private String periodoReinicio;
-
-    private Boolean activo = true;
 }
