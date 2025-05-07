@@ -40,7 +40,8 @@ public class UsuarioEmpresaServiceImpl implements UsuarioEmpresaService {
         Empresa empresa = empresaRepository.findById(empresaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
 
-        if (usuarioRepository.findByCorreo(request.getCorreo()).isPresent()) {
+        // Usamos findByEmail, que ya viene en tu repo
+        if (usuarioRepository.findByEmail(request.getCorreo()).isPresent()) {
             throw new BadRequestException("El correo ya está en uso");
         }
 
@@ -56,7 +57,11 @@ public class UsuarioEmpresaServiceImpl implements UsuarioEmpresaService {
     @Transactional(readOnly = true)
     public List<UsuarioResponse> listarTodos() {
         Long empresaId = obtenerEmpresaIdDelUsuarioActual();
-        return usuarioRepository.findByEmpresaId(empresaId).stream()
+        Empresa empresa = empresaRepository.findById(empresaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Empresa no encontrada"));
+
+        return usuarioRepository.findByEmpresa(empresa)
+                .stream()
                 .map(usuarioMapper::toResponse)
                 .collect(Collectors.toList());
     }
@@ -84,7 +89,7 @@ public class UsuarioEmpresaServiceImpl implements UsuarioEmpresaService {
         }
 
         if (request.getCorreo() != null && !request.getCorreo().equals(usuario.getCorreo())) {
-            usuarioRepository.findByCorreo(request.getCorreo())
+            usuarioRepository.findByEmail(request.getCorreo())
                     .filter(u -> !u.getId().equals(id))
                     .ifPresent(u -> { throw new BadRequestException("Correo en uso"); });
             usuario.setCorreo(request.getCorreo());
@@ -108,6 +113,7 @@ public class UsuarioEmpresaServiceImpl implements UsuarioEmpresaService {
         if (!usuario.getEmpresa().getId().equals(empresaId)) {
             throw new UnauthorizedException("Sin permiso");
         }
+        // Asegúrate de que sumarPorModeloYUsuario(userId) devuelva List<ConsumoResponse>
         return solicitudRepository.sumarPorModeloYUsuario(userId);
     }
 
@@ -115,7 +121,7 @@ public class UsuarioEmpresaServiceImpl implements UsuarioEmpresaService {
     private Long obtenerEmpresaIdDelUsuarioActual() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String correo = auth.getName();
-        Usuario usuario = usuarioRepository.findByCorreo(correo)
+        Usuario usuario = usuarioRepository.findByEmail(correo)
                 .orElseThrow(() -> new UnauthorizedException("Usuario no autenticado"));
         return usuario.getEmpresa().getId();
     }
