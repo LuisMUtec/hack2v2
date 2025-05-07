@@ -1,6 +1,5 @@
 package com.example.hack2v2.repository;
 
-import com.example.hack2v2.model.entities.Administrador;
 import com.example.hack2v2.model.entities.Empresa;
 import com.example.hack2v2.model.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;

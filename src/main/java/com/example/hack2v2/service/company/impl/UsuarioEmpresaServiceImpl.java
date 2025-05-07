@@ -6,7 +6,6 @@ import com.example.hack2v2.dto.response.UsuarioResponse;
 import com.example.hack2v2.exception.BadRequestException;
 import com.example.hack2v2.exception.ResourceNotFoundException;
 import com.example.hack2v2.exception.UnauthorizedException;
-import com.example.hack2v2.model.entities.Administrador;
 import com.example.hack2v2.model.entities.Empresa;
 import com.example.hack2v2.model.entities.Usuario;
 import com.example.hack2v2.repository.AdministradorRepository;
