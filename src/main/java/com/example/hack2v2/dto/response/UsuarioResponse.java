@@ -16,5 +16,6 @@ public class UsuarioResponse {
     private String empresaNombre;
     private String nombreUsuario;
     private String email;
+    private RolEnum rol;
 
 }

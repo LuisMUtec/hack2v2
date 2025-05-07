@@ -1,6 +1,6 @@
 package com.example.hack2v2.controller.admin;
 
-import com.example.hack2v2.dto.request.EmpresaRequest;
+import com.example.hack2v2.dto.request.EmpresaCreacionRequest;
 import com.example.hack2v2.dto.response.EmpresaResponse;
 import com.example.hack2v2.dto.response.ConsumoResponse;
 import com.example.hack2v2.service.admin.EmpresaAdminService;
@@ -25,7 +25,7 @@ public class EmpresaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EmpresaResponse createCompany(@Valid @RequestBody EmpresaRequest request) {
+    public EmpresaResponse createCompany(@Valid @RequestBody EmpresaCreacionRequest request) {
         return empresaService.crear(request);
     }
 
@@ -43,7 +43,7 @@ public class EmpresaController {
     /*──────────────────── 4. Actualizar empresa ────────────────*/
     @PutMapping("/{id}")
     public EmpresaResponse updateCompany(@PathVariable Long id,
-                                         @Valid @RequestBody EmpresaRequest request) {
+                                         @Valid @RequestBody EmpresaCreacionRequest request) {
         return empresaService.actualizar(id, request);
     }
 

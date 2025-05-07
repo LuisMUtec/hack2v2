@@ -17,7 +17,7 @@ public class RestriccionResponse {
     private Boolean activo;
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaActualizacion;
-
+/*
     public RestriccionResponse(Restriccion r) {
         this.id                 = r.getId();
         this.modeloId           = r.getModelo().getId();
@@ -29,4 +29,5 @@ public class RestriccionResponse {
         this.fechaCreacion      = r.getFechaCreacion();
         this.fechaActualizacion = r.getFechaActualizacion();
     }
+ */
 }

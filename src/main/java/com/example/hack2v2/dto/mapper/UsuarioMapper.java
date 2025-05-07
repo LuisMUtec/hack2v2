@@ -2,6 +2,7 @@ package com.example.hack2v2.dto.mapper;
 
 import com.example.hack2v2.dto.request.UsuarioRequest;
 import com.example.hack2v2.dto.response.UsuarioResponse;
+import com.example.hack2v2.model.entities.Empresa;
 import com.example.hack2v2.model.entities.Usuario;
 import com.example.hack2v2.model.enums.RolEnum;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ public class UsuarioMapper {
     public Usuario toEntity(UsuarioRequest request) {
         Usuario usuario = new Usuario();
         usuario.setNombreUsuario(request.getNombreUsuario());
+        usuario.setNombreUsuario(request.getNombre());
         usuario.setEmail(request.getEmail());
         usuario.setContrasena(request.getContrasena()); // se encriptará en el servicio
         // Asignar rol; por defecto ROLE_USER si no se especifica
@@ -27,6 +29,9 @@ public class UsuarioMapper {
         } else {
             usuario.setRol(RolEnum.ROLE_USER.name());
         }
+        usuario.setContrasena(request.getPassword()); // Debe ser encriptada antes de guardar
+        usuario.setEmpresa(empresa);
+        usuario.setRol(RolEnum.ROLE_USER); // Por defecto
         return usuario;
     }
 
@@ -37,8 +42,10 @@ public class UsuarioMapper {
         return UsuarioResponse.builder()
                 .id(usuario.getId())
                 .nombreUsuario(usuario.getNombreUsuario())
-                .email(usuario.getCorreo())
+                .email(usuario.getEmail())
+                .rol(usuario.getRol())
                 .empresaId(usuario.getEmpresa() != null ? usuario.getEmpresa().getId() : null)
+                .empresaNombre(usuario.getEmpresa() != null ? usuario.getEmpresa().getNombre() : null)
                 .build();
     }
 
@@ -56,7 +63,7 @@ public class UsuarioMapper {
             usuario.setContrasena(request.getContrasena());
         }
         if (request.getRol() != null) {
-            usuario.setRol(request.getRol().name());
+            usuario.setRol(RolEnum.valueOf(request.getRol().name()));
         }
     }
 }

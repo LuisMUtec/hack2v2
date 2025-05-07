@@ -11,5 +11,6 @@ import java.util.Optional;
 @Repository
 public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
     Optional<Empresa> findByRuc(String ruc);
+    boolean existsByRuc(String ruc);
     List<Empresa> findByEstado(EstadoEmpresaEnum estado);
 }
