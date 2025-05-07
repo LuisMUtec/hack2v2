@@ -12,11 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UsuarioResponse {
     private Long id;
-    private String nombre;
-    private String apellido;
-    private String email;
-    private RolEnum rol;
-    private boolean activo;
     private Long empresaId;
     private String empresaNombre;
+    private String nombreUsuario;
+    private String correo;
+
 }
