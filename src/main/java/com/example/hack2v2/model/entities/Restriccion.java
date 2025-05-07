@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "restricciones")
@@ -36,9 +37,6 @@ public class Restriccion {
     @Column(nullable = false)
     private String periodoReinicio; // formato: "1h", "1d", "7d", etc.
 
-    private LocalDateTime fechaCreacion;
-
-    private LocalDateTime fechaActualizacion;
-
-    private boolean activo = true;
+    @OneToMany(mappedBy = "restriccion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Limite> limites;
 }

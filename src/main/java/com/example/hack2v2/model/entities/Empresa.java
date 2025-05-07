@@ -31,11 +31,7 @@ public class Empresa {
     @Column(nullable = false)
     private LocalDateTime fechaAfiliacion;
     
-    @Enumerated(EnumType.STRING)
-    private EstadoEmpresaEnum estado;
-    
-    @OneToOne(mappedBy = "empresa", cascade = CascadeType.ALL)
-    private Administrador administrador;
+    private boolean estado = true;
     
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
     private List<Usuario> usuarios = new ArrayList<>();

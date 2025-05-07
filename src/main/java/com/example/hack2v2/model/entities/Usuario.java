@@ -20,31 +20,26 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @Column(nullable = false)
-    private String nombre;
-    
-    @Column(nullable = false)
-    private String apellido;
-    
-    @Column(unique = true, nullable = false)
-    private String email;
-    
-    @Column(nullable = false)
-    private String password;
-    
-    @Enumerated(EnumType.STRING)
-    private RolEnum rol;
-    
-    private boolean activo = true;
-    
-    @ManyToOne
-    @JoinColumn(name = "empresa_id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
-    
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<Limite> limites = new ArrayList<>();
-    
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<Solicitud> solicitudes = new ArrayList<>();
+
+    @Column(name = "nombre_usuario", unique = true, nullable = false)
+    private String nombreUsuario;
+
+    @Column(name = "correo", unique = true, nullable = false)
+    private String correo;
+
+    @Column(name = "contrasena", nullable = false)
+    private String contrasena;
+
+    @Column(nullable = false)
+    private String rol; // p.ej. "COMPANY_ADMIN" o "USER"
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Limite> limites;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Solicitud> solicitudes;
 }

@@ -18,29 +18,18 @@ public class Limite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
-    
-    @ManyToOne
-    @JoinColumn(name = "modelo_id", nullable = false)
-    private ModeloIA modelo;
-    
-    @Column(nullable = false)
-    private Integer limiteSolicitudes;
-    
-    @Column(nullable = false)
-    private Integer limiteTokens;
-    
-    @Column(nullable = false)
-    private String periodoReinicio; // formato: "1h", "1d", "7d", etc.
-    
-    private Integer solicitudesUsadas = 0;
-    
-    private Integer tokensUsados = 0;
-    
-    private LocalDateTime ultimoReinicio;
-    
-    private LocalDateTime proximoReinicio;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restriccion_id", nullable = false)
+    private Restriccion restriccion;
+
+    @Column(name = "max_solicitudes_usuario")
+    private Integer maxSolicitudesUsuario;
+
+    @Column(name = "max_tokens_usuario")
+    private Integer maxTokensUsuario;
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "solicitudes")
@@ -19,31 +20,27 @@ public class Solicitud {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "empresa_id", nullable = false)
+    private Empresa empresa;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modelo_id", nullable = false)
     private ModeloIA modelo;
 
-    @Column(nullable = false)
-    private String tipo; 
+    @Column(name = "texto_solicitud", columnDefinition = "TEXT", nullable = false)
+    private String textoSolicitud;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String consulta;
+    @Column(name = "texto_respuesta", columnDefinition = "TEXT")
+    private String textoRespuesta;
 
-    @Column(columnDefinition = "TEXT")
-    private String respuesta;
-
+    @Column(name = "tokens_consumidos", nullable = false)
     private Integer tokensConsumidos;
 
-    @Column(nullable = false)
-    private LocalDateTime fechaHora;
-
-    private String nombreArchivo; // Para solicitudes multimodales
-
-    private boolean exitoso;
-
-    private String mensajeError;
-} 
+    @Column(name = "fecha_creacion", nullable = false)
+    private ZonedDateTime fechaCreacion;
+}
