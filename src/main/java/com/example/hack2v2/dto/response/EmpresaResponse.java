@@ -1,4 +1,3 @@
-
 package com.example.hack2v2.dto.response;
 
 import com.example.hack2v2.model.entities.Empresa;
