@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Limite {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,13 +35,23 @@ public class Limite {
     private Integer limiteTokens;
     
     @Column(nullable = false)
-    private String periodoReinicio; // formato: "1h", "1d", "7d", etc.
+    private String periodoReinicio; // "1h", "1d", "7d"
     
-    private Integer solicitudesUsadas = 0;
+    private LocalDateTime fechaCreacion;
     
-    private Integer tokensUsados = 0;
+    private LocalDateTime fechaUltimoReinicio;
     
-    private LocalDateTime ultimoReinicio;
+    private LocalDateTime ultimaModificacion;
     
-    private LocalDateTime proximoReinicio;
+    @PrePersist
+    protected void onCreate() {
+        this.fechaCreacion = LocalDateTime.now();
+        this.fechaUltimoReinicio = LocalDateTime.now();
+        this.ultimaModificacion = LocalDateTime.now();
+    }
+    
+    @PreUpdate
+    protected void onUpdate() {
+        this.ultimaModificacion = LocalDateTime.now();
+    }
 }

@@ -34,9 +34,6 @@ public class Empresa {
     @Enumerated(EnumType.STRING)
     private EstadoEmpresaEnum estado;
     
-    @OneToOne(mappedBy = "empresa", cascade = CascadeType.ALL)
-    private Administrador administrador;
-    
     @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
     private List<Usuario> usuarios = new ArrayList<>();
     
