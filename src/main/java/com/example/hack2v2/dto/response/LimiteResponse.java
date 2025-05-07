@@ -24,4 +24,8 @@ public class LimiteResponse {
     private Integer tokensUsados;
     private LocalDateTime ultimoReinicio;
     private LocalDateTime proximoReinicio;
+    private Long restriccionId;
+    private Integer maxSolicitudesUsuario;
+    private Integer maxTokensUsuario;
+
 }

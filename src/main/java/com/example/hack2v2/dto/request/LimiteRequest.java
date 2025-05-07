@@ -2,6 +2,7 @@ package com.example.hack2v2.dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LimiteRequest {
+
+    @NotNull
+    private Long restriccionId;
+    @Positive
+    private Integer maxSolicitudesUsuario;
+    @Positive
+    private Integer maxTokensUsuario;
     
     @NotNull(message = "El modelo es obligatorio")
     private Long modeloId;
@@ -25,5 +33,5 @@ public class LimiteRequest {
     private Integer limiteTokens;
     
     @NotNull(message = "El periodo de reinicio es obligatorio")
-    private String periodoReinicio; // "1h", "1d", "7d"
+    private String periodoReinicio;
 }
