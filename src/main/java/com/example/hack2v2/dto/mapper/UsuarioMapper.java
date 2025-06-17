@@ -2,7 +2,6 @@ package com.example.hack2v2.dto.mapper;
 
 import com.example.hack2v2.dto.request.UsuarioRequest;
 import com.example.hack2v2.dto.response.UsuarioResponse;
-import com.example.hack2v2.model.entities.Empresa;
 import com.example.hack2v2.model.entities.Usuario;
 import com.example.hack2v2.model.enums.RolEnum;
 import org.springframework.stereotype.Component;
@@ -22,15 +21,14 @@ public class UsuarioMapper {
         usuario.setNombreUsuario(request.getNombreUsuario());
         usuario.setEmail(request.getEmail());
         usuario.setContrasena(request.getContrasena()); // se encriptará en el servicio
+
         // Asignar rol; por defecto ROLE_USER si no se especifica
         if (request.getRol() != null) {
-            usuario.setRol(RolEnum.valueOf(request.getRol().name()));
+            usuario.setRol(request.getRol());
         } else {
-            usuario.setRol(RolEnum.valueOf(RolEnum.ROLE_USER.name()));
+            usuario.setRol(RolEnum.ROLE_USER);
         }
-        usuario.setContrasena(request.getContrasena()); // Debe ser encriptada antes de guardar
-        usuario.setEmpresa(empresa);
-        usuario.setRol(RolEnum.ROLE_USER); // Por defecto
+
         return usuario;
     }
 
